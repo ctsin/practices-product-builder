@@ -7,7 +7,7 @@ type SyntheticEventFactory = {
       capture: boolean;
       once: boolean;
     }>
-  ): void;
+  ): (agrs: any) => any;
 };
 
 type SyntheticEvent = {
@@ -18,7 +18,7 @@ type SyntheticEvent = {
       capture: boolean;
       once: boolean;
     }>
-  ): void;
+  ): SyntheticEventFactory;
 };
 
 const on: SyntheticEventFactory = (
@@ -30,8 +30,11 @@ const on: SyntheticEventFactory = (
   const matches = (eventTarget: EventTarget) =>
     !!(eventTarget as HTMLElement).matches(element);
 
-  const delegatorFn = ({ target }: Event) =>
-    matches(target) && fn.call(target, event);
+  const delegatorFn = (event: Event) => {
+    const { target } = event;
+
+    return matches(target) && fn.call(target, event);
+  };
 
   document.addEventListener(eventType, delegatorFn, {
     capture: !!capture,
@@ -41,5 +44,5 @@ const on: SyntheticEventFactory = (
   return delegatorFn;
 };
 
-export const onClick: SyntheticEvent = (element, handler, opts = {}) =>
-  on("click", element, handler, opts);
+export const onClick: SyntheticEvent = (element, fn, opts = {}) =>
+  on("click", element, fn, opts);
