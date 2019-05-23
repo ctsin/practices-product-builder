@@ -1,23 +1,22 @@
+type Opts = Partial<{
+  capture: boolean;
+  once: boolean;
+}>;
+
 type SyntheticEventFactory = {
   (
     eventType: string,
     element: string,
     fn: (event: Event) => void,
-    opts: Partial<{
-      capture: boolean;
-      once: boolean;
-    }>
-  ): (agrs: any) => any;
+    opts: Opts
+  ): any;
 };
 
 type SyntheticEvent = {
   (
     element: string,
     fn: (event: Event) => void,
-    opts?: Partial<{
-      capture: boolean;
-      once: boolean;
-    }>
+    opts?: Opts
   ): SyntheticEventFactory;
 };
 
