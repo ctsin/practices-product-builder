@@ -76,3 +76,43 @@ body {
     }
   }
 }
+
+.model {
+  display: flex;
+  justify-content: center;
+
+  &#{\@set} {
+    position: relative;
+
+    &:not(:first-child) {
+      margin-left: $spacing;
+    }
+  }
+
+  &#{\@label} {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100px;
+    min-height: 160px;
+    border: 1px solid cyan;
+    border-radius: $radius;
+    color: cyan;
+    cursor: pointer;
+  }
+
+  &#{\@input} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    clip: rect(0, 0, 0, 0);
+
+    &:checked {
+      & + label {
+        background-color: cyan;
+        border-color: darkcyan;
+        color: darkcyan;
+      }
+    }
+  }
+}
