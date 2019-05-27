@@ -1,6 +1,6 @@
 import { on } from "../helper/utils";
 
-export const Nav = () => {
+export const nav = () => {
   const modelNavItemClickHandler = on("#model", "click", event => {
     event.preventDefault();
 
@@ -22,15 +22,15 @@ export const Nav = () => {
   const summaryNavItemClickHandler = on("#summary", "click", event => {
     event.preventDefault();
 
-    console.log("summary");
+    console.log("#summary");
   });
 
   return /* html */ `
-    <ul class="nav@primary">
-      <li id="model" class="nav@primary:item"><a href="#">车型</a></li>
-      <li id="color" class="nav@primary:item"><a href="#">颜色</a></li>
-      <li id="accessory" class="nav@primary:item"><a href="#">选配</a></li>
-      <li id="summary" class="nav@primary:item"><a href="#">概要</a></li>
-    </ul>
+    <div class="header@nav">
+      <a id="model" class="header@nav:item" href="#">车型</a>
+      <a id="color" class="header@nav:item" href="#">颜色</a>
+      <a id="accessory" class="header@nav:item" href="#">选配</a>
+      <a id="summary" class="header@nav:item" href="#">概要</a>
+    </div>
   `;
 };

@@ -1,3 +1,3 @@
-import { Nav } from "./nav";
+import { header } from "./header";
 
-document.getElementById("root").innerHTML = Nav();
+document.getElementById("root").innerHTML = [header()].join();

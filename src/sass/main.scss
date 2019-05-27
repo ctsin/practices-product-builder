@@ -1,3 +1,5 @@
+@import "variables";
+
 *,
 *::before,
 *::after {
@@ -21,21 +23,49 @@ body {
   color: #3a4a5a;
 }
 
-.nav {
-  &#{\@primary} {
-    display: flex;
-    justify-content: center;
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 $spacing;
 
-    &#{\:item} {
-      padding: 1em;
-      cursor: pointer;
-      & > a {
+  &#{\@title},
+  &#{\@indicator} {
+    padding: $spacing 0;
+  }
+
+  &#{\@title} {
+    &::before {
+      content: attr(data-prefix) attr(data-title);
+    }
+  }
+  &#{\@indicator} {
+    &::before {
+      content: "第 " attr(data-current) "/" attr(data-total) " 步";
+    }
+  }
+
+  &#{\@nav} {
+    display: none;
+  }
+
+  @media (min-width: 414px) {
+    justify-content: center;
+
+    &#{\@title},
+    &#{\@indicator} {
+      display: none;
+    }
+
+    &#{\@nav} {
+      display: flex;
+      justify-content: center;
+
+      &#{\:item} {
+        padding: $spacing;
         text-decoration: none;
         color: inherit;
-        pointer-events: none;
+        cursor: pointer;
+        outline: none;
 
         &:hover,
         &:focus {
