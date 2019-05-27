@@ -1,35 +1,29 @@
-import { onClick } from "../helper/utils";
+import { on } from "../helper/utils";
 
 export const Nav = () => {
-  const modelNavItemClickHandler = onClick("#model", ({ preventDefault }) => {
+  const modelNavItemClickHandler = on("#model", "click", event => {
     event.preventDefault();
 
     console.log("#model");
   });
 
-  const colorNavItemClickHandler = onClick("#color", ({ preventDefault }) => {
-    preventDefault();
+  const colorNavItemClickHandler = on("#color", "click", event => {
+    event.preventDefault();
 
     console.log("#color");
   });
 
-  const accessoryNavItemClickHandler = onClick(
-    "#accessory",
-    ({ preventDefault }) => {
-      event.preventDefault();
+  const accessoryNavItemClickHandler = on("#accessory", "click", event => {
+    event.preventDefault();
 
-      console.log("#accessory");
-    }
-  );
+    console.log("#accessory");
+  });
 
-  const summaryNavItemClickHandler = onClick(
-    "#summary",
-    ({ preventDefault }) => {
-      event.preventDefault();
+  const summaryNavItemClickHandler = on("#summary", "click", event => {
+    event.preventDefault();
 
-      console.log("#summary");
-    }
-  );
+    console.log("summary");
+  });
 
   return /* html */ `
     <ul class="nav@primary">

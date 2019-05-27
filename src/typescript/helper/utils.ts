@@ -1,31 +1,9 @@
-type Opts = Partial<{
-  capture: boolean;
-  once: boolean;
-}>;
-
-type SyntheticEventFactory = {
-  (
-    eventType: string,
-    element: string,
-    fn: (event: Event) => void,
-    opts: Opts
-  ): any;
-};
-
-type SyntheticEvent = {
-  (
-    element: string,
-    fn: (event: Event) => void,
-    opts?: Opts
-  ): SyntheticEventFactory;
-};
-
-const on: SyntheticEventFactory = (
-  eventType,
-  element,
-  fn,
-  { capture, once }
-) => {
+export const on = (
+  element: string,
+  evt: keyof DocumentEventMap,
+  fn: (event: Event) => any,
+  captureOrOptoins?: boolean | AddEventListenerOptions
+): any => {
   const matches = (eventTarget: EventTarget) =>
     !!(eventTarget as HTMLElement).matches(element);
 
@@ -35,13 +13,7 @@ const on: SyntheticEventFactory = (
     return matches(target) && fn.call(target, event);
   };
 
-  document.addEventListener(eventType, delegatorFn, {
-    capture: !!capture,
-    once: !!once
-  });
+  document.addEventListener(evt, delegatorFn, captureOrOptoins);
 
   return delegatorFn;
 };
-
-export const onClick: SyntheticEvent = (element, fn, opts = {}) =>
-  on("click", element, fn, opts);
