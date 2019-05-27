@@ -29,3 +29,5 @@ type Off = (
 
 export const off: Off = (eventType, fn) =>
   document.removeEventListener(eventType, fn);
+
+export const render = (...templates: string[]) => templates.join("");
