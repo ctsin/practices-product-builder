@@ -1,5 +1,16 @@
+// COLOR
+$color: rgba(0, 0, 0, 0.8);
+$black: rgba(black, 1);
+$white: rgba(white, 1);
+$silver: rgba(161, 169, 186, 1);
+$secondary: rgba(77, 107, 165, 1);
+$primary: rgba(44, 59, 89, 1);
+$highlight-secondary: rgba(213, 144, 139, 1);
+$highlight-primary: rgba(216, 114, 112, 1);
+
+// SPACE
 $spacing: 1rem;
 $spacing-large: $spacing * 2;
 $spacing-small: $spacing * 0.5;
 
-$radius: .2rem;
+$radius: 0.1rem;
