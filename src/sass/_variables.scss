@@ -1,12 +1,12 @@
 // COLOR
-$color: rgba(0, 0, 0, 0.8);
 $black: rgba(black, 1);
 $white: rgba(white, 1);
-$silver: rgba(161, 169, 186, 1);
-$secondary: rgba(77, 107, 165, 1);
-$primary: rgba(44, 59, 89, 1);
-$highlight-secondary: rgba(213, 144, 139, 1);
-$highlight-primary: rgba(216, 114, 112, 1);
+$color: rgba(33, 28, 38, 1);
+$primary: rgba(68, 26, 47, 1);
+$secondary: rgba(135, 8, 52, 1);
+$pink: rgba(209, 26, 61, 1);
+$yellow: rgba(253, 103, 47, 1);
+$shadow: rgba(black, 0.05);
 
 // SPACE
 $spacing: 1rem;
@@ -14,3 +14,6 @@ $spacing-large: $spacing * 2;
 $spacing-small: $spacing * 0.5;
 
 $radius: 0.1rem;
+
+// BREAK
+$break-mobile: 414px;
