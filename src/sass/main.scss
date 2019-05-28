@@ -146,6 +146,7 @@ body {
 
 .footer {
   display: flex;
+  align-items: center;
   box-shadow: 0 -3px 3px $shadow;
 
   &#{\@total} {
@@ -159,13 +160,14 @@ body {
 
   .prev,
   .next {
-    position: relative;
+    display: flex;
+    align-items: center;
     flex: 1;
-    padding: $spacing;
     text-decoration: none;
     text-align: center;
     color: inherit;
     background-color: inherit;
+    white-space: nowrap;
 
     &:hover,
     &:focus {
@@ -175,22 +177,30 @@ body {
 
     &::before {
       content: "";
-      position: absolute;
-      top: 50%;
-      @include square(0.6rem);
+      @include square(0.5rem);
+      margin: $spacing;
       border: 2px solid;
       border-color: transparent transparent currentColor currentColor;
+    }
+
+    &::after {
+      flex: 1;
     }
   }
 
   .prev {
     &::before {
-      left: 1rem;
-      transform: translate3d(0, -50%, 0) rotate(45deg);
+      transform: rotate(45deg);
+    }
+
+    &::after {
+      content: attr(data-title);
+      margin-right: $spacing-small;
     }
   }
 
   .next {
+    flex-direction: row-reverse;
     color: $white;
     background-color: $secondary;
 
@@ -201,8 +211,61 @@ body {
     }
 
     &::before {
-      right: 1rem;
-      transform: translate3d(0, -50%, 0) rotate(-135deg);
+      transform: rotate(-135deg);
+    }
+
+    &::after {
+      content: attr(data-title);
+      margin-left: $spacing;
+    }
+  }
+
+  @media (min-width: $break-mobile) {
+    padding: $spacing-small $spacing;
+
+    &#{\@total} {
+      display: flex;
+      flex-direction: column;
+
+      &::before,
+      &::after {
+        display: block;
+        line-height: 0.9;
+      }
+
+      &::before {
+        content: "总计";
+      }
+
+      &::after {
+        content: "￥" attr(data-amount);
+        font-size: 2rem;
+      }
+    }
+
+    &#{\@nav} {
+      flex: 0;
+      margin-left: auto;
+    }
+
+    .prev,
+    .next {
+      flex: auto;
+      border-radius: 9999rem;
+    }
+
+    .prev {
+      background-color: $background;
+      &::after {
+        content: none;
+      }
+    }
+
+    .next {
+      margin-left: $spacing;
+
+      &::after {
+      }
     }
   }
 }
