@@ -1,4 +1,5 @@
 import { on } from "../helper/utils";
+import { toast } from "./toast";
 
 export const nav = () => {
   const modelNavItemClickHandler = on("#model", "click", event => {
@@ -10,7 +11,7 @@ export const nav = () => {
   const colorNavItemClickHandler = on("#color", "click", event => {
     event.preventDefault();
 
-    console.log("#color");
+    toast();
   });
 
   const accessoryNavItemClickHandler = on("#accessory", "click", event => {

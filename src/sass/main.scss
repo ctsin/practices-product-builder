@@ -267,17 +267,24 @@ body {
   }
 }
 
-.toast {
+.toasts {
   position: fixed;
   bottom: $spacing;
   left: 50%;
   transform: translate3d(-50%, 0, 0);
-  padding: $spacing-small $spacing;
-  border-radius: $radius-round;
-  background-color: $background-dark;
-  color: $white;
 
-  &::after {
-    content: attr(data-content);
+  .toast {
+    padding: $spacing-small $spacing;
+    border-radius: $radius-round;
+    background-color: $background-dark;
+    color: $white;
+
+    &:not(:first-child) {
+      margin-top: $spacing;
+    }
+
+    &::after {
+      content: attr(data-content);
+    }
   }
 }
