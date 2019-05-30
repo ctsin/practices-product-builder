@@ -251,7 +251,7 @@ body {
     .prev,
     .next {
       flex: auto;
-      border-radius: 9999rem;
+      border-radius: $radius-round;
     }
 
     .prev {
@@ -263,9 +263,21 @@ body {
 
     .next {
       margin-left: $spacing;
-
-      &::after {
-      }
     }
+  }
+}
+
+.toast {
+  position: fixed;
+  bottom: $spacing;
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
+  padding: $spacing-small $spacing;
+  border-radius: $radius-round;
+  background-color: $background-dark;
+  color: $white;
+
+  &::after {
+    content: attr(data-content);
   }
 }
