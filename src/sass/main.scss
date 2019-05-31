@@ -105,6 +105,7 @@ body {
   }
 
   &#{\@label} {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -113,6 +114,30 @@ body {
     color: $secondary;
     border: 1px solid currentColor;
     cursor: pointer;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: $spacing * 2;
+      left: 50%;
+      border: 2px solid;
+    }
+
+    &::before {
+      @include square($size-2x);
+      margin-top: $size-base;
+      margin-left: -$size-base;
+      border-radius: $radius-round;
+      border-color: $background;
+    }
+
+    &::after {
+      @include size(1.2rem, 0.6rem);
+      margin-bottom: 0.75rem;
+      margin-left: -0.6rem;
+      border-color: transparent;
+    }
   }
 
   &#{\@input} {
@@ -126,6 +151,17 @@ body {
         background-color: $secondary;
         border-color: $primary;
         color: $white;
+
+        &::before {
+          border-color: rgba($pink, 0.8) transparent transparent;
+          background-color: $white;
+          animation: selected 0.5s linear infinite;
+        }
+
+        &::after {
+          border-color: transparent transparent $secondary $secondary;
+          animation: bounce 0.4s forwards;
+        }
       }
     }
   }
@@ -141,6 +177,27 @@ body {
         margin-left: $spacing;
       }
     }
+  }
+}
+
+@keyframes selected {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(0) rotate(-45deg);
+  }
+  30% {
+    transform: scale(1.1) rotate(-45deg);
+  }
+  60% {
+    transform: scale(0.9) rotate(-45deg);
+  }
+  100% {
+    transform: scale(1) rotate(-45deg);
   }
 }
 
