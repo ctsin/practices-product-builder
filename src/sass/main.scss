@@ -144,6 +144,36 @@ body {
   }
 }
 
+.color {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  &#{\@set} {
+    position: relative;
+    display: flex;
+    flex: 1;
+    background-color: $yellow;
+
+    &:not(:first-child) {
+      margin-top: $spacing;
+    }
+  }
+
+  @media (min-width: $break-mobile) {
+    flex-direction: row;
+
+    &#{\@set} {
+      flex: 1;
+
+      &:not(:first-child) {
+        margin-top: unset;
+        margin-left: $spacing;
+      }
+    }
+  }
+}
+
 .footer {
   display: flex;
   align-items: center;
