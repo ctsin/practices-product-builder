@@ -287,12 +287,6 @@ body {
     background-color: inherit;
     white-space: nowrap;
 
-    &:hover,
-    &:focus {
-      text-decoration: none;
-      color: inherit;
-    }
-
     &::before {
       content: "";
       @include square(0.5rem);
@@ -322,12 +316,6 @@ body {
     color: $white;
     background-color: $secondary;
 
-    &:hover,
-    &:focus {
-      color: $white;
-      background-color: $primary;
-    }
-
     &::before {
       transform: rotate(-135deg);
     }
@@ -335,6 +323,13 @@ body {
     &::after {
       content: attr(data-title);
       margin-left: $spacing;
+    }
+
+    &:hover,
+    &:focus {
+      text-decoration: none;
+      color: $white;
+      background-color: $primary;
     }
   }
 
