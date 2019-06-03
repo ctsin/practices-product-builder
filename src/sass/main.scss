@@ -85,12 +85,14 @@ body {
 }
 
 .body {
+  display: flex;
   flex: 1;
   margin: $spacing;
 }
 
 .model {
   display: flex;
+  flex: 1;
   justify-content: center;
   flex-direction: column;
 
@@ -172,8 +174,6 @@ body {
     flex-direction: row;
 
     &#{\@set} {
-      flex: 1;
-
       &:not(:first-child) {
         margin-top: unset;
         margin-left: $spacing;

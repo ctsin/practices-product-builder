@@ -30,4 +30,6 @@ type Off = (
 export const off: Off = (eventType, fn) =>
   document.removeEventListener(eventType, fn);
 
+export const isBoolean = (target: any) => typeof target === "boolean";
+
 export const render = (...templates: string[]) => templates.join("");
