@@ -1,6 +1,6 @@
 export const model = () => {
   return /* html */ `
-    <div class="body model">
+    <div class="active body model">
       <div class="model@set">
         <input class="model@input" id="75d" name="model" type="radio" />
         <label class="model@label" for="75d">75D</label>

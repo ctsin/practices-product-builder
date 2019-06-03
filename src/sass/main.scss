@@ -137,6 +137,7 @@ body {
       margin-bottom: 0.75rem;
       margin-left: -0.6rem;
       border-color: transparent;
+      transform: rotate(-45deg) scale(0);
     }
   }
 
@@ -155,12 +156,13 @@ body {
         &::before {
           border-color: rgba($pink, 0.8) transparent transparent;
           background-color: $white;
-          animation: selected 0.5s linear infinite;
+          animation: loading 0.5s linear infinite;
         }
 
         &::after {
           border-color: transparent transparent $secondary $secondary;
-          animation: bounce 0.4s forwards;
+          transform: rotate(-45deg) scale(1);
+          transition: transform $fast cubic-bezier(0.08, 0.22, 0.65, 1.5);
         }
       }
     }
@@ -178,26 +180,55 @@ body {
       }
     }
   }
+
+  animation: right-out $duration forwards;
+
+  &.active {
+    animation: right-in $duration forwards;
+  }
 }
 
-@keyframes selected {
+@keyframes loading {
   to {
     transform: rotate(1turn);
   }
 }
 
-@keyframes bounce {
-  0% {
-    transform: scale(0) rotate(-45deg);
+@keyframes right-in {
+  from {
+    opacity: 0;
+    transform: translate3d($offset-2x, 0, 0);
   }
-  30% {
-    transform: scale(1.1) rotate(-45deg);
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
-  60% {
-    transform: scale(0.9) rotate(-45deg);
+}
+
+@keyframes right-out {
+  to {
+    opacity: 0;
+    transform: translate3d(-$offset-2x, 0, 0);
   }
-  100% {
-    transform: scale(1) rotate(-45deg);
+}
+
+@keyframes left-in {
+  from {
+    opacity: 0;
+    transform: translate3d(-$offset-2x, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes left-out {
+  to {
+    opacity: 0;
+    transform: translate3d(-$offset-2x, 0, 0);
   }
 }
 
@@ -282,7 +313,7 @@ body {
 
     &::after {
       content: attr(data-title);
-      margin-right: $spacing-small;
+      margin-right: $spacing-xs;
     }
   }
 
@@ -308,7 +339,7 @@ body {
   }
 
   @media (min-width: $break-mobile) {
-    padding: $spacing-small $spacing;
+    padding: $spacing-xs $spacing;
 
     &#{\@total} {
       display: flex;
@@ -361,7 +392,7 @@ body {
   transform: translate3d(-50%, 0, 0);
 
   .toast {
-    padding: $spacing-small $spacing;
+    padding: $spacing-xs $spacing;
     border-radius: $radius-round;
     background-color: $background-dark;
     color: $white;

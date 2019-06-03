@@ -15,12 +15,26 @@ $size-base: 1rem;
 $size-2x: $size-base * 2;
 $size-3x: $size-base * 3;
 $size-4x: $size-base * 4;
-$spacing: $size-base;
-$spacing-large: $spacing * 2;
-$spacing-small: $spacing * 0.5;
 
+$spacing: $size-base;
+$spacing-2x: $spacing * 2;
+$spacing-xs: $spacing * 0.5;
+
+$offset: $size-base;
+$offset-2x: $offset * 2;
+$offset-xs: $offset * 0.5;
+
+// TIMER
+$duration: 300ms;
+$fast: 200ms;
+$slow: 500ms;
+$timeout: 1s;
+$timeout-2x: $timeout * 2;
+$timeout-3x: $timeout * 3;
+
+// RADIUS
 $radius: 0.1rem;
 $radius-round: 9999rem;
 
-// BREAK
+// BREAK POINT
 $break-mobile: 414px;
