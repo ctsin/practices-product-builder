@@ -1,26 +1,26 @@
-import { on } from "../helper/utils";
+import { $ } from "../helper/utils";
 import { toast } from "./toast";
 
 export const nav = () => {
-  const modelNavItemClickHandler = on("#model", "click", event => {
+  const modelNavItemClicked = $("body").on("click", "#model", event => {
     event.preventDefault();
 
     console.log("#model");
   });
 
-  const colorNavItemClickHandler = on("#color", "click", event => {
+  const colorNavItemClicked = $("body").on("click", "#color", event => {
     event.preventDefault();
 
     toast();
   });
 
-  const accessoryNavItemClickHandler = on("#accessory", "click", event => {
+  const accessoryNavItemClicked = $("body").on("click", "#accessory", event => {
     event.preventDefault();
 
     console.log("#accessory");
   });
 
-  const summaryNavItemClickHandler = on("#summary", "click", event => {
+  const summaryNavItemClicked = $("body").on("click", "#summary", event => {
     event.preventDefault();
 
     console.log("#summary");
