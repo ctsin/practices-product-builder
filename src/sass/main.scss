@@ -85,17 +85,26 @@ body {
 }
 
 .body {
+  position: relative;
   display: flex;
   flex: 1;
   margin: $spacing;
 }
 
-.model {
+.model,
+.color {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: flex;
   flex: 1;
   justify-content: center;
   flex-direction: column;
+}
 
+.model {
   &#{\@set} {
     position: relative;
     display: flex;
@@ -181,8 +190,6 @@ body {
     }
   }
 
-  animation: right-out $duration forwards;
-
   &.active {
     animation: right-in $duration forwards;
   }
@@ -233,10 +240,6 @@ body {
 }
 
 .color {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-
   &#{\@set} {
     position: relative;
     display: flex;
