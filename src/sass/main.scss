@@ -95,13 +95,17 @@ body {
 .color {
   position: absolute;
   top: 0;
+  left: 0;
   right: 0;
   bottom: 0;
-  left: 0;
   display: flex;
   flex: 1;
   justify-content: center;
   flex-direction: column;
+
+  &.active {
+    animation: right-in $duration ease-in both;
+  }
 }
 
 .model {
@@ -189,10 +193,6 @@ body {
       }
     }
   }
-
-  &.active {
-    animation: right-in $duration forwards;
-  }
 }
 
 @keyframes loading {
@@ -204,7 +204,7 @@ body {
 @keyframes right-in {
   from {
     opacity: 0;
-    transform: translate3d($offset-2x, 0, 0);
+    transform: translate3d($offset, 0, 0);
   }
 
   to {
@@ -216,14 +216,14 @@ body {
 @keyframes right-out {
   to {
     opacity: 0;
-    transform: translate3d(-$offset-2x, 0, 0);
+    transform: translate3d(-$offset, 0, 0);
   }
 }
 
 @keyframes left-in {
   from {
     opacity: 0;
-    transform: translate3d(-$offset-2x, 0, 0);
+    transform: translate3d(-$offset, 0, 0);
   }
 
   to {
@@ -235,7 +235,7 @@ body {
 @keyframes left-out {
   to {
     opacity: 0;
-    transform: translate3d(-$offset-2x, 0, 0);
+    transform: translate3d(-$offset, 0, 0);
   }
 }
 
