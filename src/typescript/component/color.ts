@@ -1,7 +1,16 @@
-export const color = () => {
+export const color = (...colors: string[]) => {
   return /* html */ `
     <div class="color">
-      <div class="color@set">COLOR</div>
+      ${colors
+        .map(
+          c => /* html */ `
+            <div class="color@set">
+              <input type="radio" id="${c}" name="color" class="hide" />
+              <label for="${c}" class="color@label" style="color: ${c}"></label>
+            </div>
+          `
+        )
+        .join("")}
     </div>
   `;
 };

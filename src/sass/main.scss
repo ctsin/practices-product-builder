@@ -1,6 +1,57 @@
 @import "variables";
 @import "mixin";
 
+@keyframes loading {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@keyframes right-in {
+  from {
+    opacity: 0;
+    transform: translate3d($offset, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes right-out {
+  to {
+    opacity: 0;
+    transform: translate3d(-$offset, 0, 0);
+  }
+}
+
+@keyframes left-in {
+  from {
+    opacity: 0;
+    transform: translate3d(-$offset, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes left-out {
+  to {
+    opacity: 0;
+    transform: translate3d(-$offset, 0, 0);
+  }
+}
+
+.hide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  clip: rect(0, 0, 0, 0);
+}
+
 *,
 *::before,
 *::after {
@@ -99,16 +150,12 @@ body {
   right: 0;
   bottom: 0;
   display: flex;
-  flex: 1;
-  justify-content: center;
-  flex-direction: column;
-
-  &.active {
-    animation: right-in $duration ease-in both;
-  }
 }
 
 .model {
+  justify-content: center;
+  flex-direction: column;
+
   &#{\@set} {
     position: relative;
     display: flex;
@@ -156,12 +203,8 @@ body {
     }
   }
 
-  &#{\@input} {
-    position: absolute;
-    top: 0;
-    left: 0;
-    clip: rect(0, 0, 0, 0);
-
+  input[type="checkbox"],
+  input[type="radio"] {
     &:checked {
       & + label {
         background-color: $secondary;
@@ -183,6 +226,10 @@ body {
     }
   }
 
+  &.active {
+    animation: right-in $duration ease-in both;
+  }
+
   @media (min-width: $break-mobile) {
     flex-direction: row;
 
@@ -195,71 +242,43 @@ body {
   }
 }
 
-@keyframes loading {
-  to {
-    transform: rotate(1turn);
-  }
-}
-
-@keyframes right-in {
-  from {
-    opacity: 0;
-    transform: translate3d($offset, 0, 0);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes right-out {
-  to {
-    opacity: 0;
-    transform: translate3d(-$offset, 0, 0);
-  }
-}
-
-@keyframes left-in {
-  from {
-    opacity: 0;
-    transform: translate3d(-$offset, 0, 0);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes left-out {
-  to {
-    opacity: 0;
-    transform: translate3d(-$offset, 0, 0);
-  }
-}
-
 .color {
-  &#{\@set} {
-    position: relative;
-    display: flex;
-    flex: 1;
-    background-color: $yellow;
+  justify-content: center;
+  align-items: center;
 
+  &#{\@set} {
     &:not(:first-child) {
-      margin-top: $spacing;
+      margin-left: $spacing;
     }
   }
 
-  @media (min-width: $break-mobile) {
-    flex-direction: row;
+  &#{\@label} {
+    position: relative;
+    display: flex;
+    @include square(2rem);
+    border-radius: $radius-round;
+    background-color: currentColor;
 
-    &#{\@set} {
-      flex: 1;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate3d(-50%, -50%, 0);
+      width: calc(100% + 8px);
+      height: calc(100% + 8px);
+      border: 2px solid currentColor;
+      border-radius: $radius-round;
+    }
+  }
 
-      &:not(:first-child) {
-        margin-top: unset;
-        margin-left: $spacing;
+  input[type="checkbox"],
+  input[type="radio"] {
+    &:checked {
+      & + label {
+        &::before {
+          border-color: $primary;
+        }
       }
     }
   }
