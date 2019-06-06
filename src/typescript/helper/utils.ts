@@ -1,48 +1,75 @@
 type EventType = keyof DocumentEventMap;
 
-type On = (
-  element: string,
-  eventType: EventType,
-  fn: EventListener,
-  captureOrOptoins?: boolean | AddEventListenerOptions
-) => any;
-
 export const isBoolean = (target: any) => typeof target === "boolean";
 
 export const $ = (selector: string, parentNode = document) => {
-  const element = parentNode.querySelectorAll(selector);
+  const elements = parentNode.querySelectorAll(selector);
 
-  const before = (html: string) => {
-    element.forEach(node => {
-      node.insertAdjacentHTML("beforebegin", html);
+  const before = (html: string, force: boolean = true) => {
+    force && elements.forEach(el => {
+      el.insertAdjacentHTML("beforebegin", html);
     });
+
+    return methods;
   };
 
-  const after = (html: string) => {
-    element.forEach(node => {
-      node.insertAdjacentHTML("afterend", html);
+  const after = (html: string, force: boolean = true) => {
+    force && elements.forEach(el => {
+      el.insertAdjacentHTML("afterend", html);
     });
+
+    return methods;
   };
 
-  const prepend = (html: string) => {
-    element.forEach(node => {
-      node.insertAdjacentHTML("afterbegin", html);
+  const prepend = (html: string, force: boolean = true) => {
+    force && elements.forEach(el => {
+      el.insertAdjacentHTML("afterbegin", html);
     });
+
+    return methods;
   };
 
-  const append = (html: string) => {
-    element.forEach(node => {
-      node.insertAdjacentHTML("beforeend", html);
+  const append = (html: string, force: boolean = true) => {
+    force && elements.forEach(el => {
+      el.insertAdjacentHTML("beforeend", html);
     });
+
+    return methods;
   };
 
-  type On = (
+  const addClass = (classNames: string) => {
+    elements.forEach(el => {
+      el.classList.add(classNames);
+    });
+
+    return methods;
+  };
+
+  const removeClass = (classNames: string) => {
+    elements.forEach(el => {
+      el.classList.remove(classNames);
+    });
+
+    return methods;
+  };
+
+  const toggleClass = (classNames: string, force?: boolean) => {
+    elements.forEach(el => {
+      el.classList.toggle(classNames, force);
+    });
+
+    return methods;
+  };
+
+  const prev = () => [...elements].map(el => el.previousElementSibling);
+  const next = () => [...elements].map(el => el.nextElementSibling);
+
+  const on = (
     events: EventType,
     selector: string,
-    listener: EventListener
-  ) => EventListener;
-
-  const on: On = (events, selector, listener) => {
+    listener: EventListener,
+    options: AddEventListenerOptions | boolean = false
+  ): EventListener => {
     const delegatorFn: EventListener = event => {
       const { target } = event;
 
@@ -50,22 +77,34 @@ export const $ = (selector: string, parentNode = document) => {
         listener.call(target, event);
     };
 
-    element.forEach(node => {
-      node.addEventListener(events, delegatorFn);
+    elements.forEach(el => {
+      el.addEventListener(events, delegatorFn, options);
     });
 
     return delegatorFn;
   };
 
-  type Off = (event: EventType, listener: EventListener) => void;
-
-  const off: Off = (events, listener) => {
-    element.forEach(node => {
-      node.removeEventListener(events, listener);
+  const off = (events: EventType, listener: EventListener): void => {
+    elements.forEach(el => {
+      el.removeEventListener(events, listener);
     });
   };
 
-  return { before, after, prepend, append, on, off };
+  const methods = {
+    before,
+    after,
+    prepend,
+    append,
+    addClass,
+    removeClass,
+    toggleClass,
+    prev,
+    next,
+    on,
+    off
+  };
+
+  return methods;
 };
 
 export const render = (...templates: string[]) => templates.join("");
