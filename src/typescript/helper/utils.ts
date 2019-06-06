@@ -6,33 +6,37 @@ export const $ = (selector: string, parentNode = document) => {
   const elements = parentNode.querySelectorAll(selector);
 
   const before = (html: string, force: boolean = true) => {
-    force && elements.forEach(el => {
-      el.insertAdjacentHTML("beforebegin", html);
-    });
+    force &&
+      elements.forEach(el => {
+        el.insertAdjacentHTML("beforebegin", html);
+      });
 
     return methods;
   };
 
   const after = (html: string, force: boolean = true) => {
-    force && elements.forEach(el => {
-      el.insertAdjacentHTML("afterend", html);
-    });
+    force &&
+      elements.forEach(el => {
+        el.insertAdjacentHTML("afterend", html);
+      });
 
     return methods;
   };
 
   const prepend = (html: string, force: boolean = true) => {
-    force && elements.forEach(el => {
-      el.insertAdjacentHTML("afterbegin", html);
-    });
+    force &&
+      elements.forEach(el => {
+        el.insertAdjacentHTML("afterbegin", html);
+      });
 
     return methods;
   };
 
   const append = (html: string, force: boolean = true) => {
-    force && elements.forEach(el => {
-      el.insertAdjacentHTML("beforeend", html);
-    });
+    force &&
+      elements.forEach(el => {
+        el.insertAdjacentHTML("beforeend", html);
+      });
 
     return methods;
   };
@@ -61,8 +65,16 @@ export const $ = (selector: string, parentNode = document) => {
     return methods;
   };
 
-  const prev = () => [...elements].map(el => el.previousElementSibling);
-  const next = () => [...elements].map(el => el.nextElementSibling);
+  const prev = () => {
+    const elementsArray = [...elements].map(el => el.previousElementSibling);
+
+    return elementsArray.every(el => el === null) ? null : elementsArray;
+  };
+  const next = () => {
+    const elementsArray = [...elements].map(el => el.nextElementSibling);
+
+    return elementsArray.every(el => el === null) ? null : elementsArray;
+  };
 
   const on = (
     events: EventType,

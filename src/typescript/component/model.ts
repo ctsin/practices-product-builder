@@ -3,11 +3,29 @@ import { color } from "./color";
 
 export const model = () => {
   const m75Changed = $("body").on("change", "#m75", event => {
-    $(".body").append(render(color("red", "green")));
+    $("#prev").removeClass("hidden");
+
+    $(".model")
+      .removeClass("active")
+      .addClass("left-out")
+      .after(render(color("red", "green")), !document.querySelector(".color"))
+      .next()
+      .forEach(el => {
+        el && el.classList.add("active");
+      });
   });
 
   const m90Changed = $("body").on("change", "#m90", event => {
-    console.log(event.target);
+    $("#prev").removeClass("hidden");
+
+    $(".model")
+      .removeClass("active")
+      .addClass("left-out")
+      .after(render(color("blue", "yellow")), !document.querySelector(".color"))
+      .next()
+      .forEach(el => {
+        el && el.classList.add("active");
+      });
   });
 
   return /* html */ `

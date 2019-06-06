@@ -150,6 +150,28 @@ body {
   right: 0;
   bottom: 0;
   display: flex;
+  visibility: hidden;
+
+  &.active {
+    visibility: visible;
+    animation: right-in $duration ease-in both;
+  }
+
+  &.left-in {
+    animation: left-in $duration ease-in both;
+  }
+
+  &.left-out {
+    animation: left-out $duration ease-in both;
+  }
+
+  &.right-in {
+    animation: right-in $duration ease-in both;
+  }
+
+  &.right-out {
+    animation: right-out $duration ease-in both;
+  }
 }
 
 .model {
@@ -224,10 +246,6 @@ body {
         }
       }
     }
-  }
-
-  &.active {
-    animation: right-in $duration ease-in both;
   }
 
   @media (min-width: $break-mobile) {
@@ -319,6 +337,10 @@ body {
 
     &::after {
       flex: 1;
+    }
+
+    &.hidden {
+      display: none;
     }
   }
 
