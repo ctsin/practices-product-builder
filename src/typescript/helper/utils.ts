@@ -1,6 +1,7 @@
 type EventType = keyof DocumentEventMap;
 
-export const isBoolean = (target: any) => typeof target === "boolean";
+export const isBoolean = (target: any): target is Boolean =>
+  typeof target === "boolean";
 
 export const $ = (selector: string, parentNode = document) => {
   const elements = parentNode.querySelectorAll(selector);
@@ -120,3 +121,17 @@ export const $ = (selector: string, parentNode = document) => {
 };
 
 export const render = (...templates: string[]) => templates.join("");
+
+export const nope = () => null;
+
+export const event = (events: string, customEventInit?: CustomEventInit) => (
+  target: Document | HTMLElement,
+  listener: EventListener,
+  addEventListenerOptions?: boolean | AddEventListenerOptions
+) => {
+  if (!target) return nope;
+
+  target.addEventListener(events, listener, addEventListenerOptions);
+
+  return () => target.dispatchEvent(new CustomEvent(events, customEventInit));
+};
