@@ -1,7 +1,12 @@
 type EventType = keyof DocumentEventMap;
 
+export const nope = () => null;
+
 export const isBoolean = (target: any): target is Boolean =>
   typeof target === "boolean";
+
+export const isEmpty = (val: null | Iterable<any>) =>
+  val === null || !(Object.keys(val) || val).length;
 
 export const $ = (selector: string, parentNode = document) => {
   const elements = parentNode.querySelectorAll(selector);
@@ -69,12 +74,12 @@ export const $ = (selector: string, parentNode = document) => {
   const prev = () => {
     const elementsArray = [...elements].map(el => el.previousElementSibling);
 
-    return elementsArray.every(el => el === null) ? null : elementsArray;
+    return elementsArray.every(el => el === null) ? [] : elementsArray;
   };
   const next = () => {
     const elementsArray = [...elements].map(el => el.nextElementSibling);
 
-    return elementsArray.every(el => el === null) ? null : elementsArray;
+    return elementsArray.every(el => el === null) ? [] : elementsArray;
   };
 
   const on = (
@@ -121,8 +126,6 @@ export const $ = (selector: string, parentNode = document) => {
 };
 
 export const render = (...templates: string[]) => templates.join("");
-
-export const nope = () => null;
 
 export const event = (events: string, customEventInit?: CustomEventInit) => (
   target: Document | HTMLElement,

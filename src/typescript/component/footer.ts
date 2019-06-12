@@ -9,7 +9,7 @@ export const footer = () => {
         active
           .removeClass("active")
           .addClass("right-out")
-          .prev()!
+          .prev()
           .forEach(el => {
             if (!el) return;
 
