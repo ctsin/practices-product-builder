@@ -418,7 +418,7 @@ body {
       }
     }
 
-    .next {
+    a[data-title]:not(:first-child) {
       margin-left: $spacing;
     }
   }

@@ -127,7 +127,10 @@ export const $ = (selector: string, parentNode = document) => {
 
 export const render = (...templates: string[]) => templates.join("");
 
-export const event = (events: string, customEventInit?: CustomEventInit) => (
+export const customEvent = (
+  events: string,
+  customEventInit?: CustomEventInit
+) => (
   target: Document | HTMLElement,
   listener: EventListener,
   addEventListenerOptions?: boolean | AddEventListenerOptions
