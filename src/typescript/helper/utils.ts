@@ -1,6 +1,6 @@
 type EventType = keyof DocumentEventMap;
 
-export const nope = () => null;
+export const noop = () => null;
 
 export const isBoolean = (target: any): target is Boolean =>
   typeof target === "boolean";
@@ -140,7 +140,7 @@ export const when = (
   addEventListenerOptions?: AddEventListenerOptions
 ) => {
   const target = document.querySelector(selector);
-  if (!target) return nope;
+  if (!target) return noop;
 
   const fn = (event: Event) =>
     (event.target as HTMLElement).matches(selector) &&
