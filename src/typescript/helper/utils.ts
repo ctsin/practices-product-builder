@@ -135,25 +135,24 @@ export const customEvent = (
   listener: EventListener,
   addEventListenerOptions?: boolean | AddEventListenerOptions
 ) => {
-  let targets: NodeList;
+  const eventInstance = new CustomEvent(events, customEventInit);
 
   if (target instanceof Document) {
     target.addEventListener(events, listener, addEventListenerOptions);
+
+    return () => target.dispatchEvent(eventInstance);
   } else {
-    targets = document.querySelectorAll(target);
+    const targets = document.querySelectorAll(target);
 
     targets.forEach(element => {
       element.addEventListener(events, listener, addEventListenerOptions);
     });
+
+    return () =>
+      [...targets]
+        .map(element => element.dispatchEvent(eventInstance))
+        .some(isPrevented => isPrevented === false)
+        ? false
+        : true;
   }
-
-  return () => {
-    const eventInstance = new CustomEvent(events, customEventInit);
-
-    return [...targets]
-      .map(element => element.dispatchEvent(eventInstance))
-      .some(isPrevented => isPrevented === false)
-      ? false
-      : true;
-  };
 };
