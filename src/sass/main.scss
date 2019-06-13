@@ -86,35 +86,35 @@ body {
   justify-content: space-between;
   margin: 0 $spacing;
 
-  &#{\@title},
-  &#{\@indicator} {
+  &\@title,
+  &\@indicator {
     padding: $spacing 0;
   }
 
-  &#{\@title} {
+  &\@title {
     &::before {
       content: attr(data-prefix) attr(data-title);
     }
   }
-  &#{\@indicator} {
+  &\@indicator {
     &::before {
       content: "第 " attr(data-current) "/" attr(data-total) " 步";
     }
   }
 
-  &#{\@nav} {
+  &\@nav {
     display: none;
   }
 
   @media (min-width: $break-mobile) {
     justify-content: center;
 
-    &#{\@title},
-    &#{\@indicator} {
+    &\@title,
+    &\@indicator {
       display: none;
     }
 
-    &#{\@nav} {
+    &\@nav {
       display: flex;
       justify-content: center;
 
@@ -178,7 +178,7 @@ body {
   justify-content: center;
   flex-direction: column;
 
-  &#{\@set} {
+  &\@set {
     position: relative;
     display: flex;
     flex: 1;
@@ -188,7 +188,7 @@ body {
     }
   }
 
-  &#{\@label} {
+  &\@label {
     position: relative;
     display: flex;
     justify-content: center;
@@ -251,7 +251,7 @@ body {
   @media (min-width: $break-mobile) {
     flex-direction: row;
 
-    &#{\@set} {
+    &\@set {
       &:not(:first-child) {
         margin-top: unset;
         margin-left: $spacing;
@@ -264,13 +264,13 @@ body {
   justify-content: center;
   align-items: center;
 
-  &#{\@set} {
+  &\@set {
     &:not(:first-child) {
       margin-left: $spacing;
     }
   }
 
-  &#{\@label} {
+  &\@label {
     position: relative;
     display: flex;
     @include square(2rem);
@@ -307,11 +307,11 @@ body {
   align-items: center;
   box-shadow: 0 -3px 3px $shadow;
 
-  &#{\@total} {
+  &\@total {
     display: none;
   }
 
-  &#{\@nav} {
+  &\@nav {
     display: flex;
     flex: 1;
   }
@@ -380,7 +380,7 @@ body {
   @media (min-width: $break-mobile) {
     padding: $spacing-xs $spacing;
 
-    &#{\@total} {
+    &\@total {
       display: flex;
       flex-direction: column;
 
@@ -400,7 +400,7 @@ body {
       }
     }
 
-    &#{\@nav} {
+    &\@nav {
       flex: 0;
       margin-left: auto;
     }
