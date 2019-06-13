@@ -1,8 +1,14 @@
-import { $, render } from "../helper/utils";
+import { $, render, customEvent } from "../helper/utils";
 import { color } from "./color";
 
 export const model = () => {
-  const m75Changed = $("body").on("change", "#m75", event => {});
+  const m75Changed = $("body").on("change", "#m75", () => {
+    const modelSelected = customEvent("modelSelected")(
+      ".model",
+      event => console.log(event.target),
+      { once: true }
+    )();
+  });
 
   const m90Changed = $("body").on("change", "#m90", event => {});
 
