@@ -131,28 +131,23 @@ export const customEvent = (
   events: string,
   customEventInit?: CustomEventInit
 ) => (
-  target: Document | string,
+  target: string,
   listener: EventListener,
   addEventListenerOptions?: boolean | AddEventListenerOptions
 ) => {
-  const eventInstance = new CustomEvent(events, customEventInit);
+  const targets = document.querySelectorAll(target);
 
-  if (target instanceof Document) {
-    target.addEventListener(events, listener, addEventListenerOptions);
+  targets.forEach(element => {
+    element.addEventListener(events, listener, addEventListenerOptions);
+  });
 
-    return () => target.dispatchEvent(eventInstance);
-  } else {
-    const targets = document.querySelectorAll(target);
+  return () => {
+    const eventInstance = new CustomEvent(events, customEventInit);
 
-    targets.forEach(element => {
-      element.addEventListener(events, listener, addEventListenerOptions);
-    });
-
-    return () =>
-      [...targets]
-        .map(element => element.dispatchEvent(eventInstance))
-        .some(isPrevented => isPrevented === false)
-        ? false
-        : true;
-  }
+    return [...targets]
+      .map(element => element.dispatchEvent(eventInstance))
+      .some(cancelled => cancelled === false)
+      ? false
+      : true;
+  };
 };
