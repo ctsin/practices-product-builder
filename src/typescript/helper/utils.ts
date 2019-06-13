@@ -127,27 +127,36 @@ export const $ = (selector: string, parentNode = document) => {
 
 export const render = (...templates: string[]) => templates.join("");
 
-export const customEvent = (
+export const when = (
   events: string,
-  customEventInit?: CustomEventInit
+  customEventInit: CustomEventInit = {
+    bubbles: true,
+    cancelable: true,
+    composed: true
+  }
 ) => (
-  target: string,
+  selector: string,
   listener: EventListener,
-  addEventListenerOptions?: boolean | AddEventListenerOptions
+  addEventListenerOptions?: AddEventListenerOptions
 ) => {
-  const targets = document.querySelectorAll(target);
+  const target = document.querySelector(selector);
+  if (!target) return nope;
 
-  targets.forEach(element => {
-    element.addEventListener(events, listener, addEventListenerOptions);
+  const fn = (event: Event) =>
+    (event.target as HTMLElement).matches(selector) &&
+    listener.call(event.target, event);
+
+  document.addEventListener(events, fn, {
+    once: true,
+    ...addEventListenerOptions
   });
 
-  return () => {
-    const eventInstance = new CustomEvent(events, customEventInit);
-
-    return [...targets]
-      .map(element => element.dispatchEvent(eventInstance))
-      .some(cancelled => cancelled === false)
-      ? false
-      : true;
-  };
+  return target.dispatchEvent(
+    new CustomEvent(events, {
+      bubbles: true,
+      cancelable: true,
+      composed: true,
+      ...customEventInit
+    })
+  );
 };
