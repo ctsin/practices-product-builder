@@ -1,16 +1,12 @@
-import { $, render, customEvent } from "../helper/utils";
+import { $, render, when } from "../helper/utils";
 import { color } from "./color";
 
 export const model = () => {
-  const m75Changed = $("body").on("change", "#m75", () => {
-    const modelSelected = customEvent("modelSelected")(
-      ".model",
-      event => console.log(event.target),
-      { once: true }
-    )();
+  $("body").on("change", "#m75", () => {
+    when("modelSelected")(".model", event => console.log(event.type));
   });
 
-  const m90Changed = $("body").on("change", "#m90", event => {});
+  $("body").on("change", "#m90", event => {});
 
   return /* html */ `
     <div class="active model">
