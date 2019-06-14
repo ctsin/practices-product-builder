@@ -1,4 +1,4 @@
-import { render } from "../helper/utils";
+import { render } from "../helper";
 
 import { model } from "./model";
 import { color } from "./color";

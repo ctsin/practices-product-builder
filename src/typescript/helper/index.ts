@@ -1,3 +1,5 @@
+import { Actions } from "../utils";
+
 type EventType = keyof DocumentEventMap;
 
 export const noop = () => null;
@@ -128,12 +130,8 @@ export const $ = (selector: string, parentNode = document) => {
 export const render = (...templates: string[]) => templates.join("");
 
 export const when = (
-  events: string,
-  customEventInit: CustomEventInit = {
-    bubbles: true,
-    cancelable: true,
-    composed: true
-  }
+  events: Actions,
+  detail?: any
 ) => (
   selector: string,
   listener: EventListener,
@@ -156,7 +154,7 @@ export const when = (
       bubbles: true,
       cancelable: true,
       composed: true,
-      ...customEventInit
+      detail
     })
   );
 };

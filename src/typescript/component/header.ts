@@ -1,4 +1,4 @@
-import { render } from "../helper/utils";
+import { render } from "../helper";
 
 import { nav } from "./nav";
 import { stepTitle } from "./step-title";

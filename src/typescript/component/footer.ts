@@ -1,4 +1,4 @@
-import { $ } from "../helper/utils";
+import { $ } from "../helper";
 
 export const footer = () => {
   $("body").on("click", "#prev", event => {

@@ -1,4 +1,4 @@
-import { render, $ } from "../helper/utils";
+import { render, $ } from "../helper";
 
 import { header } from "./header";
 import { footer } from "./footer";
