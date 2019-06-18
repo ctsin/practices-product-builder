@@ -1,23 +1,7 @@
-import { $ } from "../helper";
+import { $, isEmpty } from "../helper";
 
 export const footer = () => {
-  $(document).on("click", "#prev", event => {
-    const active = $(".active");
-
-    active.prev()
-      ? $("#prev").removeClass("hidden") &&
-        active
-          .removeClass("active")
-          .addClass("right-out")
-          .prev()
-          .forEach(el => {
-            if (!el) return;
-
-            el.classList.add("active");
-            el.classList.remove("left-out");
-          })
-      : $("#prev").addClass("hidden");
-  });
+  $(document).on("click", "#prev", event => {});
 
   return /* html */ `
   <div class="footer">
