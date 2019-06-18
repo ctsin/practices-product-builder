@@ -47,7 +47,6 @@ type $DOMMethods = Record<
   $DocumentMethods;
 
 export function $(selector: Document): $DocumentMethods;
-
 export function $(selector: string, parentNode?: Document): $DOMMethods;
 export function $(
   selector: Document | string,
