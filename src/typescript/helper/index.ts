@@ -29,10 +29,10 @@ type ProxyRemoveEventListener = (
   options?: AddEventListenerOptions | boolean
 ) => void;
 
-interface $DocumentMethods {
+type $DocumentMethods = {
   on: ProxyAddEventListener;
   off: ProxyRemoveEventListener;
-}
+};
 
 type $DOMManipulation = (html: string, force?: boolean) => void;
 type $DOMTravel = () => (Element | null)[];
