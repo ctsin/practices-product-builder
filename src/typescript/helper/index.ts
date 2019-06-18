@@ -34,17 +34,17 @@ interface $DocumentMethods {
   off: ProxyRemoveEventListener;
 }
 
-type $DOMManipulation = (html: string, force: boolean) => void;
+type $DOMManipulation = (html: string, force?: boolean) => void;
 type $DOMTravel = () => (Element | null)[];
 type $StyleClass = (classNames: string, force?: boolean) => void;
 
-type $DOMMethods = {
-  [A in "before" | "after" | "prepend" | "append"]: $DOMManipulation
-} &
-  { [B in "addClass" | "removeClass" | "toggleClass"]: $StyleClass } &
-  { [C in "prev" | "next"]: $DOMTravel } & {
-    on: ProxyAddEventListener;
-  } & { off: ProxyRemoveEventListener };
+type $DOMMethods = Record<
+  "before" | "after" | "prepend" | "append",
+  $DOMManipulation
+> &
+  Record<"addClass" | "removeClass" | "toggleClass", $StyleClass> &
+  Record<"prev" | "next", $DOMTravel> &
+  $DocumentMethods;
 
 export function $(selector: Document): $DocumentMethods;
 
