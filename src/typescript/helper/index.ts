@@ -4,92 +4,61 @@ type EventType = keyof DocumentEventMap;
 
 export const noop = () => null;
 
-export const isBoolean = (target: any): target is Boolean =>
+export const isBoolean = (target: any): target is boolean =>
   typeof target === "boolean";
+
+export const isString = (target: any): target is string =>
+  typeof target === "string";
 
 export const isEmpty = (val: null | Iterable<any>) =>
   val === null || !(Object.keys(val) || val).length;
 
-export const $ = (selector: string, parentNode = document) => {
-  const elements = parentNode.querySelectorAll(selector);
+const isDocument = (selector: string | Document): selector is Document =>
+  selector instanceof Document;
 
-  const before = (html: string, force: boolean = true) => {
-    force &&
-      elements.forEach(el => {
-        el.insertAdjacentHTML("beforebegin", html);
-      });
+type ProxyAddEventListener = (
+  events: EventType | Actions,
+  selector: string,
+  listener: EventListener,
+  options?: AddEventListenerOptions | boolean
+) => EventListener;
 
-    return methods;
-  };
+type ProxyRemoveEventListener = (
+  events: EventType | Actions,
+  listener: EventListener,
+  options?: AddEventListenerOptions | boolean
+) => void;
 
-  const after = (html: string, force: boolean = true) => {
-    force &&
-      elements.forEach(el => {
-        el.insertAdjacentHTML("afterend", html);
-      });
+interface $DocumentMethods {
+  on: ProxyAddEventListener;
+  off: ProxyRemoveEventListener;
+}
 
-    return methods;
-  };
+type $DOMManipulation = (html: string, force: boolean) => void;
+type $DOMTravel = () => (Element | null)[];
+type $StyleClass = (classNames: string, force?: boolean) => void;
 
-  const prepend = (html: string, force: boolean = true) => {
-    force &&
-      elements.forEach(el => {
-        el.insertAdjacentHTML("afterbegin", html);
-      });
+type $DOMMethods = {
+  [A in "before" | "after" | "prepend" | "append"]: $DOMManipulation
+} &
+  { [B in "addClass" | "removeClass" | "toggleClass"]: $StyleClass } &
+  { [C in "prev" | "next"]: $DOMTravel } & {
+    on: ProxyAddEventListener;
+  } & { off: ProxyRemoveEventListener };
 
-    return methods;
-  };
+export function $(selector: Document): $DocumentMethods;
 
-  const append = (html: string, force: boolean = true) => {
-    force &&
-      elements.forEach(el => {
-        el.insertAdjacentHTML("beforeend", html);
-      });
-
-    return methods;
-  };
-
-  const addClass = (classNames: string) => {
-    elements.forEach(el => {
-      el.classList.add(classNames);
-    });
-
-    return methods;
-  };
-
-  const removeClass = (classNames: string) => {
-    elements.forEach(el => {
-      el.classList.remove(classNames);
-    });
-
-    return methods;
-  };
-
-  const toggleClass = (classNames: string, force?: boolean) => {
-    elements.forEach(el => {
-      el.classList.toggle(classNames, force);
-    });
-
-    return methods;
-  };
-
-  const prev = () => {
-    const elementsArray = [...elements].map(el => el.previousElementSibling);
-
-    return elementsArray.every(el => el === null) ? [] : elementsArray;
-  };
-  const next = () => {
-    const elementsArray = [...elements].map(el => el.nextElementSibling);
-
-    return elementsArray.every(el => el === null) ? [] : elementsArray;
-  };
-
-  const on = (
-    events: EventType,
-    selector: string,
-    listener: EventListener,
-    options: AddEventListenerOptions | boolean = false
-  ): EventListener => {
+export function $(selector: string, parentNode?: Document): $DOMMethods;
+export function $(
+  selector: Document | string,
+  parentNode = document
+): $DocumentMethods | $DOMMethods {
+  const on: ProxyAddEventListener = (
+    events,
+    selector,
+    listener,
+    options = false
+  ) => {
     const delegatorFn: EventListener = event => {
       const { target } = event;
 
@@ -97,20 +66,94 @@ export const $ = (selector: string, parentNode = document) => {
         listener.call(target, event);
     };
 
-    elements.forEach(el => {
-      el.addEventListener(events, delegatorFn, options);
-    });
+    const handler = isDocument(selector) ? listener : delegatorFn;
 
-    return delegatorFn;
+    document.addEventListener(events, handler, options);
+
+    return handler;
   };
 
-  const off = (events: EventType, listener: EventListener): void => {
-    elements.forEach(el => {
-      el.removeEventListener(events, listener);
-    });
+  const off: ProxyRemoveEventListener = (events, listener, options) => {
+    document.removeEventListener(events, listener, options);
   };
 
-  const methods = {
+  if (isDocument(selector)) return { on, off };
+
+  const elements = parentNode.querySelectorAll(selector);
+
+  const before: $DOMManipulation = (html, force = true) => {
+    force &&
+      elements.forEach(el => {
+        el.insertAdjacentHTML("beforebegin", html);
+      });
+
+    return DOMMethodsAndProperties;
+  };
+
+  const after: $DOMManipulation = (html, force = true) => {
+    force &&
+      elements.forEach(el => {
+        el.insertAdjacentHTML("afterend", html);
+      });
+
+    return DOMMethodsAndProperties;
+  };
+
+  const prepend: $DOMManipulation = (html, force = true) => {
+    force &&
+      elements.forEach(el => {
+        el.insertAdjacentHTML("afterbegin", html);
+      });
+
+    return DOMMethodsAndProperties;
+  };
+
+  const append: $DOMManipulation = (html, force = true) => {
+    force &&
+      elements.forEach(el => {
+        el.insertAdjacentHTML("beforeend", html);
+      });
+
+    return DOMMethodsAndProperties;
+  };
+
+  const addClass: $StyleClass = classNames => {
+    elements.forEach(el => {
+      el.classList.add(classNames);
+    });
+
+    return DOMMethodsAndProperties;
+  };
+
+  const removeClass: $StyleClass = classNames => {
+    elements.forEach(el => {
+      el.classList.remove(classNames);
+    });
+
+    return DOMMethodsAndProperties;
+  };
+
+  const toggleClass: $StyleClass = (classNames, force) => {
+    elements.forEach(el => {
+      el.classList.toggle(classNames, force);
+    });
+
+    return DOMMethodsAndProperties;
+  };
+
+  const prev: $DOMTravel = () => {
+    const elementsArray = [...elements].map(el => el.previousElementSibling);
+
+    return elementsArray.every(el => el === null) ? [] : elementsArray;
+  };
+  const next: $DOMTravel = () => {
+    const elementsArray = [...elements].map(el => el.nextElementSibling);
+
+    return elementsArray.every(el => el === null) ? [] : elementsArray;
+  };
+
+  const DOMMethodsAndProperties = {
+    elements,
     before,
     after,
     prepend,
@@ -124,36 +167,39 @@ export const $ = (selector: string, parentNode = document) => {
     off
   };
 
-  return methods;
-};
+  return DOMMethodsAndProperties;
+}
 
-export const render = (...templates: string[]) => templates.join("");
+type Render = (...templates: string[]) => string;
+export const render: Render = (...templates) => templates.join("");
 
-export const when = (
-  events: Actions,
-  detail?: any
-) => (
+export const when = (events: Actions) => (
   selector: string,
-  listener: EventListener,
-  addEventListenerOptions?: AddEventListenerOptions
+  {
+    bubbles = true,
+    cancelable = true,
+    composed = true,
+    detail
+  }: {
+    bubbles: boolean;
+    cancelable: boolean;
+    composed: boolean;
+    detail?: any;
+  } = {
+    bubbles: true,
+    cancelable: true,
+    composed: true
+  }
 ) => {
   const target = document.querySelector(selector);
-  if (!target) return noop;
 
-  const fn = (event: Event) =>
-    (event.target as HTMLElement).matches(selector) &&
-    listener.call(event.target, event);
-
-  document.addEventListener(events, fn, {
-    once: true,
-    ...addEventListenerOptions
-  });
+  if (!target) throw new Error(`"${selector}" 选择器未能命中任何元素！`);
 
   return target.dispatchEvent(
     new CustomEvent(events, {
-      bubbles: true,
-      cancelable: true,
-      composed: true,
+      bubbles,
+      cancelable,
+      composed,
       detail
     })
   );

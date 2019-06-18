@@ -2,12 +2,16 @@ import { $, render, when } from "../helper";
 import { color } from "./color";
 import { Actions } from "../utils";
 
+export const m75Selected = when("m75Selected");
+
 export const model = () => {
-  $("body").on("change", "#m75", () => {
-    when(Actions.m75Selected)(".model", event => console.log(event.type));
+  $(document).on("change", "#m75", () => {
+    m75Selected(".model");
   });
 
-  $("body").on("change", "#m90", event => {});
+  $(document).on("m75Selected", ".model", event => console.log(event.target));
+
+  $(document).on("change", "#m90", event => {});
 
   return /* html */ `
     <div class="active model">

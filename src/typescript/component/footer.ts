@@ -1,7 +1,7 @@
 import { $ } from "../helper";
 
 export const footer = () => {
-  $("body").on("click", "#prev", event => {
+  $(document).on("click", "#prev", event => {
     const active = $(".active");
 
     active.prev()
