@@ -173,28 +173,24 @@ type Render = (...templates: string[]) => string;
 export const render: Render = (...templates) => templates.join("");
 
 export const when = (events: Actions) => (
-  selector: string,
+  target: EventTarget,
   {
     bubbles = true,
     cancelable = true,
     composed = true,
     detail
-  }: {
+  }: Partial<{
     bubbles: boolean;
     cancelable: boolean;
     composed: boolean;
-    detail?: any;
-  } = {
+    detail: any;
+  }> = {
     bubbles: true,
     cancelable: true,
     composed: true
   }
-) => {
-  const target = document.querySelector(selector);
-
-  if (!target) throw new Error(`"${selector}" 选择器未能命中任何元素！`);
-
-  return target.dispatchEvent(
+) =>
+  target.dispatchEvent(
     new CustomEvent(events, {
       bubbles,
       cancelable,
@@ -202,4 +198,3 @@ export const when = (events: Actions) => (
       detail
     })
   );
-};

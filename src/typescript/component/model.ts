@@ -5,11 +5,15 @@ import { Actions } from "../utils";
 export const m75Selected = when("m75Selected");
 
 export const model = () => {
-  $(document).on("change", "#m75", () => {
-    m75Selected(".model");
+  $(document).on("change", "#m75", ({ target }) => {
+    m75Selected(target!, { detail: "Hello World" });
   });
 
-  $(document).on("m75Selected", ".model", event => console.log(event.target));
+  $(document).on(
+    "m75Selected",
+    "#m75",
+    ({ detail = "Hello World" }: CustomEventInit) => console.log(detail)
+  );
 
   $(document).on("change", "#m90", event => {});
 
