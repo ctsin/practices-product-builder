@@ -1,8 +1,6 @@
-import { $, render, when } from "../helper";
+import { $, render } from "../helper";
 import { color } from "./color";
-import { Actions } from "../utils";
-
-export const m75Selected = when("m75Selected");
+import { m75Selected } from "../utils/events";
 
 export const model = () => {
   $(document).on("change", "#m75", ({ target }) => {
