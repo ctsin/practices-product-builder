@@ -173,7 +173,7 @@ type Render = (...templates: string[]) => string;
 export const render: Render = (...templates) => templates.join("");
 
 export const when = (events: Actions) => (
-  target: EventTarget,
+  target: EventTarget | string,
   {
     bubbles = true,
     cancelable = true,
@@ -189,12 +189,26 @@ export const when = (events: Actions) => (
     cancelable: true,
     composed: true
   }
-) =>
-  target.dispatchEvent(
-    new CustomEvent(events, {
-      bubbles,
-      cancelable,
-      composed,
-      detail
-    })
-  );
+) => {
+  const dispatch = (el: EventTarget) =>
+    el.dispatchEvent(
+      new CustomEvent(events, {
+        bubbles,
+        cancelable,
+        composed,
+        detail
+      })
+    );
+
+  if (isString(target)) {
+    const elements = document.querySelectorAll(target);
+
+    if (isEmpty(elements)) {
+      throw new Error(`"${target}" 选择器未命中任何元素！`);
+    }
+
+    return [...elements].map(el => dispatch(el)).some(prevented => prevented);
+  }
+
+  return dispatch(target);
+};
