@@ -1,7 +1,12 @@
-import { $ } from "../helper";
+import { $, select } from "../helper";
+import { modelSelected } from "../utils";
 
 export const footer = () => {
   $(document).on("click", "#prev", event => {});
+
+  modelSelected.on(({ detail: { isFirst } }) => {
+    isFirst && select("#prev")!.classList.remove("hidden");
+  });
 
   return /* html */ `
   <div class="footer">

@@ -1,19 +1,17 @@
-import { $, render } from "../helper";
+import { $, render, isFirstSectionActived } from "../helper";
 import { color } from "./color";
-import { m75Selected } from "../utils/events";
+import { m75Selected, modelSelected } from "../utils";
 
 export const model = () => {
   $(document).on("change", "#m75", ({ target }) => {
-    m75Selected(target!, { detail: "Hello World" });
+    m75Selected.fire({ detail: "Hello World" });
   });
 
-  $(document).on(
-    "m75Selected",
-    "#m75",
-    ({ detail = "Hello World" }: CustomEventInit) => console.log(detail)
-  );
+  $(document).on("change", "#m90", ({ target }) => {
+    const isFirst = isFirstSectionActived(".model");
 
-  $(document).on("change", "#m90", event => {});
+    modelSelected.fire({ detail: { isFirst } });
+  });
 
   return /* html */ `
     <div class="active model">
@@ -27,5 +25,8 @@ export const model = () => {
         <label class="model@label" for="m90">M90</label>
       </div>
     </div>
+    <div class="color"></div>
+    <div class="accessory"></div>
+    <div class="model"></div>
   `;
 };
