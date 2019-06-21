@@ -1,5 +1,5 @@
 import { CustomEvents } from "../helper";
-import { isDocument } from ".";
+import { isDocument } from "./is";
 
 type EventType = keyof DocumentEventMap;
 
@@ -16,23 +16,31 @@ type ProxyRemoveEventListener = (
   options?: AddEventListenerOptions | boolean
 ) => void;
 
+type FireCustomEvent = (
+  events: CustomEvents,
+  options?: CustomEventInit
+) => boolean;
+
 type $DocumentMethods = {
   on: ProxyAddEventListener;
   off: ProxyRemoveEventListener;
+  fire: FireCustomEvent;
 };
 
 type $DOMManipulation = (
   html: string,
   force?: boolean
 ) => ElementsAnd$DOMMethods;
+
 type $DOMTravel = () => (Element | null)[];
+
 type $StyleClass = (
   classNames: string,
   force?: boolean
 ) => ElementsAnd$DOMMethods;
 
 type ElementsAnd$DOMMethods = { elements: NodeList } & Record<
-  "before" | "after" | "prepend" | "append" | "replace",
+  "before" | "after" | "prepend" | "append" | "html",
   $DOMManipulation
 > &
   Record<"addClass" | "removeClass" | "toggleClass", $StyleClass> &
@@ -72,7 +80,10 @@ export function $(
     document.removeEventListener(events, listener, options);
   };
 
-  if (isDocument(selector)) return { on, off };
+  const fire: FireCustomEvent = (events, options) =>
+    document.dispatchEvent(new CustomEvent(events, options));
+
+  if (isDocument(selector)) return { on, off, fire };
 
   const elements = parentNode.querySelectorAll(selector);
 
@@ -112,7 +123,7 @@ export function $(
     return DOMMethodsAndProperties;
   };
 
-  const replace: $DOMManipulation = (html, force = true) => {
+  const html: $DOMManipulation = (html, force = true) => {
     force &&
       elements.forEach(el => {
         el.innerHTML = html;
@@ -162,14 +173,15 @@ export function $(
     after,
     prepend,
     append,
-    replace,
+    html,
     addClass,
     removeClass,
     toggleClass,
     prev,
     next,
     on,
-    off
+    off,
+    fire
   };
 
   return DOMMethodsAndProperties;

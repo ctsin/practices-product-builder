@@ -3,6 +3,10 @@ import { modelSelected } from "../utils";
 
 export const footer = () => {
   $(document).on("click", "#prev", ({ target }) => {
+    const current = $(".active")
+      .removeClass("active")
+      .fire("m75Selected");
+
     const active = document.getElementsByClassName("active")[0];
 
     const prev = active.previousElementSibling;

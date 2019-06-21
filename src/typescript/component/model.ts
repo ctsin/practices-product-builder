@@ -7,7 +7,7 @@ export const model = () => {
     const data = await getModelData(el.dataset.model!);
 
     $(".color")
-      .replace(render(color(...data.color)))
+      .html(render(color(...data.color)))
       .addClass("active")
       .prev()
       .forEach(el => el && el.classList.remove("active"));
