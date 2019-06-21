@@ -1,4 +1,5 @@
-type Mocks = { [key: string]: { color: string[] } };
+export type MocksValue = { color: string[] };
+export type Mocks = { [key: string]: MocksValue };
 
 export const mocks: Mocks = {
   m75: { color: ["red", "blue"] },

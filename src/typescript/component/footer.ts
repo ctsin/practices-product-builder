@@ -2,7 +2,15 @@ import { $, select } from "../helper";
 import { modelSelected } from "../utils";
 
 export const footer = () => {
-  $(document).on("click", "#prev", event => {});
+  $(document).on("click", "#prev", ({ target }) => {
+    const active = document.getElementsByClassName("active")[0];
+
+    const prev = active.previousElementSibling;
+    prev && prev.classList.add("active");
+    active.previousElementSibling &&
+      target &&
+      (target as HTMLDivElement).classList.add("hidden");
+  });
 
   modelSelected.on(({ detail: { isFirst } }) => {
     isFirst && select("#prev")!.classList.remove("hidden");

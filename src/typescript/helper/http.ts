@@ -1,6 +1,6 @@
-import { mocks } from "../utils";
+import { mocks, MocksValue } from "../utils";
 
-export const getModelData = (model: string) => {
+export const getModelData = <T>(model: string): Promise<MocksValue> => {
   return new Promise(resolve =>
     setTimeout(() => {
       resolve(mocks[model]);

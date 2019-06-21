@@ -1,4 +1,4 @@
-import { CustomEvents } from "../utils";
+import { CustomEvents } from "../helper";
 import { isDocument } from ".";
 
 type EventType = keyof DocumentEventMap;
@@ -21,12 +21,18 @@ type $DocumentMethods = {
   off: ProxyRemoveEventListener;
 };
 
-type $DOMManipulation = (html: string, force?: boolean) => void;
+type $DOMManipulation = (
+  html: string,
+  force?: boolean
+) => ElementsAnd$DOMMethods;
 type $DOMTravel = () => (Element | null)[];
-type $StyleClass = (classNames: string, force?: boolean) => void;
+type $StyleClass = (
+  classNames: string,
+  force?: boolean
+) => ElementsAnd$DOMMethods;
 
-type $DOMMethods = Record<
-  "before" | "after" | "prepend" | "append",
+type ElementsAnd$DOMMethods = { elements: NodeList } & Record<
+  "before" | "after" | "prepend" | "append" | "replace",
   $DOMManipulation
 > &
   Record<"addClass" | "removeClass" | "toggleClass", $StyleClass> &
@@ -34,11 +40,14 @@ type $DOMMethods = Record<
   $DocumentMethods;
 
 export function $(selector: Document): $DocumentMethods;
-export function $(selector: string, parentNode?: Document): $DOMMethods;
+export function $(
+  selector: string,
+  parentNode?: Document
+): ElementsAnd$DOMMethods;
 export function $(
   selector: Document | string,
   parentNode = document
-): $DocumentMethods | $DOMMethods {
+): $DocumentMethods | ElementsAnd$DOMMethods {
   const on: ProxyAddEventListener = (
     events,
     selector,
@@ -103,6 +112,15 @@ export function $(
     return DOMMethodsAndProperties;
   };
 
+  const replace: $DOMManipulation = (html, force = true) => {
+    force &&
+      elements.forEach(el => {
+        el.innerHTML = html;
+      });
+
+    return DOMMethodsAndProperties;
+  };
+
   const addClass: $StyleClass = classNames => {
     elements.forEach(el => {
       el.classList.add(classNames);
@@ -144,6 +162,7 @@ export function $(
     after,
     prepend,
     append,
+    replace,
     addClass,
     removeClass,
     toggleClass,
