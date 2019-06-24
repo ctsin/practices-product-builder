@@ -1,4 +1,10 @@
-export type CustomEvents = "m75Selected" | "m90Selected" | "modelSelected";
+export type CustomEvents =
+  | "m75Selected"
+  | "m90Selected"
+  | "modelSelected"
+  | "prevClicked"
+  | "nextClicked"
+  | "activeUpdated";
 
 export const when = (events: CustomEvents) => {
   const on = (

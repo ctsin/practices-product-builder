@@ -1,5 +1,16 @@
-import { m75Selected, modelSelected } from "../utils";
-import { $, render, isFirstSectionActived, getModelData } from "../helper";
+import {
+  m75Selected,
+  modelSelected,
+  prevClicked,
+  activeUpdated
+} from "../utils";
+import {
+  $,
+  render,
+  isFirstSectionActived,
+  getModelData,
+  select
+} from "../helper";
 import { color } from "./color";
 
 export const model = () => {
@@ -24,6 +35,20 @@ export const model = () => {
     modelSelected.fire({ detail: { isFirst } });
 
     updateProductContent(target as HTMLElement);
+  });
+
+  prevClicked.on(({ detail: { active } }) => {
+    console.log("调试: active", active);
+
+    if (!active) return;
+
+    active.classList.remove("active");
+
+    const prev = active.previousElementSibling;
+    prev && prev.classList.add("active");
+
+    const isFirst = isFirstSectionActived(".model");
+    activeUpdated.fire({ detail: { isFirst } });
   });
 
   return /* html */ `

@@ -1,23 +1,21 @@
 import { $, select } from "../helper";
-import { modelSelected } from "../utils";
+import { modelSelected, activeUpdated } from "../utils";
 
 export const footer = () => {
-  $(document).on("click", "#prev", ({ target }) => {
-    const current = $(".active")
+  $(document).on("click", "#prev", () => {
+    const active = $(".active");
+
+    active
       .removeClass("active")
-      .fire("m75Selected");
-
-    const active = document.getElementsByClassName("active")[0];
-
-    const prev = active.previousElementSibling;
-    prev && prev.classList.add("active");
-    active.previousElementSibling &&
-      target &&
-      (target as HTMLDivElement).classList.add("hidden");
+      .fire("prevClicked", { detail: { active: active.elements[0] } });
   });
 
   modelSelected.on(({ detail: { isFirst } }) => {
     isFirst && select("#prev")!.classList.remove("hidden");
+  });
+
+  activeUpdated.on(({ detail: { isFirst } }) => {
+    $("#prev").toggleClass("hidden", !isFirst);
   });
 
   return /* html */ `
