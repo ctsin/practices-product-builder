@@ -1,5 +1,6 @@
 import { CustomEvents } from "../helper";
 import { isDocument } from "./is";
+import { err } from "./fn";
 
 type EventType = keyof DocumentEventMap;
 
@@ -27,35 +28,26 @@ type $DocumentMethods = {
   fire: FireCustomEvent;
 };
 
-type $DOMManipulation = (
-  html: string,
-  force?: boolean
-) => ElementsAnd$DOMMethods;
+type $DOMManipulation = (html: string, force?: boolean) => $DOMMethods;
 
-type $DOMTravel = () => (Element | null)[];
+type $DOMTravel = () => Element | null;
 
-type $StyleClass = (
-  classNames: string,
-  force?: boolean
-) => ElementsAnd$DOMMethods;
+type $StyleClass = (classNames: string, force?: boolean) => $DOMMethods;
 
-type ElementsAnd$DOMMethods = { elements: NodeList } & Record<
-  "before" | "after" | "prepend" | "append" | "html",
-  $DOMManipulation
-> &
+type $GetElement = { get: () => Element | null };
+
+export type $DOMMethods = $GetElement &
+  Record<"before" | "after" | "prepend" | "append" | "html", $DOMManipulation> &
   Record<"addClass" | "removeClass" | "toggleClass", $StyleClass> &
   Record<"prev" | "next", $DOMTravel> &
   $DocumentMethods;
 
 export function $(selector: Document): $DocumentMethods;
-export function $(
-  selector: string,
-  parentNode?: Document
-): ElementsAnd$DOMMethods;
+export function $(selector: string, parentNode?: Document): $DOMMethods;
 export function $(
   selector: Document | string,
   parentNode = document
-): $DocumentMethods | ElementsAnd$DOMMethods {
+): $DocumentMethods | $DOMMethods {
   const on: ProxyAddEventListener = (
     events,
     selector,
@@ -85,90 +77,66 @@ export function $(
 
   if (isDocument(selector)) return { on, off, fire };
 
-  const elements = parentNode.querySelectorAll(selector);
+  const element = parentNode.querySelector(selector);
+
+  if (!element) return err(`"${element}" 未命中任何元素！`);
+
+  const get = () => element;
 
   const before: $DOMManipulation = (html, force = true) => {
-    force &&
-      elements.forEach(el => {
-        el.insertAdjacentHTML("beforebegin", html);
-      });
+    force && element.insertAdjacentHTML("beforebegin", html);
 
     return DOMMethodsAndProperties;
   };
 
   const after: $DOMManipulation = (html, force = true) => {
-    force &&
-      elements.forEach(el => {
-        el.insertAdjacentHTML("afterend", html);
-      });
+    force && element.insertAdjacentHTML("afterend", html);
 
     return DOMMethodsAndProperties;
   };
 
   const prepend: $DOMManipulation = (html, force = true) => {
-    force &&
-      elements.forEach(el => {
-        el.insertAdjacentHTML("afterbegin", html);
-      });
+    force && element.insertAdjacentHTML("afterbegin", html);
 
     return DOMMethodsAndProperties;
   };
 
   const append: $DOMManipulation = (html, force = true) => {
-    force &&
-      elements.forEach(el => {
-        el.insertAdjacentHTML("beforeend", html);
-      });
+    force && element.insertAdjacentHTML("beforeend", html);
 
     return DOMMethodsAndProperties;
   };
 
   const html: $DOMManipulation = (html, force = true) => {
-    force &&
-      elements.forEach(el => {
-        el.innerHTML = html;
-      });
+    force && (element.innerHTML = html);
 
     return DOMMethodsAndProperties;
   };
 
   const addClass: $StyleClass = classNames => {
-    elements.forEach(el => {
-      el.classList.add(classNames);
-    });
+    element.classList.add(classNames);
 
     return DOMMethodsAndProperties;
   };
 
   const removeClass: $StyleClass = classNames => {
-    elements.forEach(el => {
-      el.classList.remove(classNames);
-    });
+    element.classList.remove(classNames);
 
     return DOMMethodsAndProperties;
   };
 
   const toggleClass: $StyleClass = (classNames, force) => {
-    elements.forEach(el => {
-      el.classList.toggle(classNames, force);
-    });
+    element.classList.toggle(classNames, force);
 
     return DOMMethodsAndProperties;
   };
 
-  const prev: $DOMTravel = () => {
-    const elementsArray = [...elements].map(el => el.previousElementSibling);
+  const prev: $DOMTravel = () => element.previousElementSibling;
 
-    return elementsArray.every(el => el === null) ? [] : elementsArray;
-  };
-  const next: $DOMTravel = () => {
-    const elementsArray = [...elements].map(el => el.nextElementSibling);
-
-    return elementsArray.every(el => el === null) ? [] : elementsArray;
-  };
+  const next: $DOMTravel = () => element.nextElementSibling;
 
   const DOMMethodsAndProperties = {
-    elements,
+    get,
     before,
     after,
     prepend,

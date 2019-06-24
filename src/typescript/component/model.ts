@@ -9,7 +9,7 @@ import {
   render,
   isFirstSectionActived,
   getModelData,
-  select
+  $DOMMethods
 } from "../helper";
 import { color } from "./color";
 
@@ -20,8 +20,8 @@ export const model = () => {
     $(".color")
       .html(render(color(...data.color)))
       .addClass("active")
-      .prev()
-      .forEach(el => el && el.classList.remove("active"));
+      .prev()!
+      .classList.remove("active");
   };
 
   $(document).on("change", "#m75", ({ target }) => {
@@ -38,13 +38,10 @@ export const model = () => {
   });
 
   prevClicked.on(({ detail: { active } }) => {
-    console.log("调试: active", active);
+    (active as $DOMMethods).removeClass("active");
 
-    if (!active) return;
+    const prev = (active as $DOMMethods).prev();
 
-    active.classList.remove("active");
-
-    const prev = active.previousElementSibling;
     prev && prev.classList.add("active");
 
     const isFirst = isFirstSectionActived(".model");
