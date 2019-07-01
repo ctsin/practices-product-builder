@@ -5,7 +5,7 @@ export const footer = () => {
   $(document).on("click", "#prev", () => {
     const active = $(".active");
 
-    active.removeClass("active").fire("prevClicked", { detail: { active } });
+    active.removeClass("active").emit("prevClicked", { detail: { active } });
   });
 
   modelSelected.on(({ detail: { isFirst } }) => {

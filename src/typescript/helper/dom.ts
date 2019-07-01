@@ -17,7 +17,7 @@ type ProxyRemoveEventListener = (
   options?: AddEventListenerOptions | boolean
 ) => void;
 
-type FireCustomEvent = (
+type EmitCustomEvent = (
   events: CustomEvents,
   options?: CustomEventInit
 ) => boolean;
@@ -25,7 +25,7 @@ type FireCustomEvent = (
 type $DocumentMethods = {
   on: ProxyAddEventListener;
   off: ProxyRemoveEventListener;
-  fire: FireCustomEvent;
+  emit: EmitCustomEvent;
 };
 
 type $DOMManipulation = (html: string, force?: boolean) => $DOMMethods;
@@ -72,10 +72,10 @@ export function $(
     document.removeEventListener(events, listener, options);
   };
 
-  const fire: FireCustomEvent = (events, options) =>
+  const emit: EmitCustomEvent = (events, options) =>
     document.dispatchEvent(new CustomEvent(events, options));
 
-  if (isDocument(selector)) return { on, off, fire };
+  if (isDocument(selector)) return { on, off, emit };
 
   const element = parentNode.querySelector(selector);
 
@@ -149,7 +149,7 @@ export function $(
     next,
     on,
     off,
-    fire
+    emit
   };
 
   return DOMMethodsAndProperties;
