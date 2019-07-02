@@ -34,7 +34,7 @@ type $DOMTravel = () => Element | null;
 
 type $StyleClass = (classNames: string, force?: boolean) => $DOMMethods;
 
-type $GetElement = { get: () => Element | null };
+type $GetElement = { get(): Element };
 
 export type $DOMMethods = $GetElement &
   Record<"before" | "after" | "prepend" | "append" | "html", $DOMManipulation> &
