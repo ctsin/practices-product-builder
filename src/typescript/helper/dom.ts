@@ -42,12 +42,18 @@ export type $DOMMethods = $GetElement &
   Record<"prev" | "next", $DOMTravel> &
   $DocumentMethods;
 
-export function $(selector: Document): $DocumentMethods;
-export function $(selector: string, parentNode?: Document): $DOMMethods;
-export function $(
-  selector: Document | string,
-  parentNode = document
-): $DocumentMethods | $DOMMethods {
+interface Dollar {
+  (selector: string, parentNode?: Document): $DOMMethods;
+  on: ProxyAddEventListener;
+  off: ProxyRemoveEventListener;
+  emit: EmitCustomEvent;
+}
+
+export const $ = ((selector, parentNode = document) => {
+  const element = parentNode.querySelector(selector);
+
+  if (!element) return err(`"${element}" 未命中任何元素！`);
+
   const on: ProxyAddEventListener = (
     events,
     selector,
@@ -74,12 +80,6 @@ export function $(
 
   const emit: EmitCustomEvent = (events, options) =>
     document.dispatchEvent(new CustomEvent(events, options));
-
-  if (isDocument(selector)) return { on, off, emit };
-
-  const element = parentNode.querySelector(selector);
-
-  if (!element) return err(`"${element}" 未命中任何元素！`);
 
   const get = () => element;
 
@@ -153,7 +153,28 @@ export function $(
   };
 
   return DOMMethodsAndProperties;
-}
+}) as Dollar;
+
+$.on = (events, selector, listener, options = false) => {
+  const delegatorFn: EventListener = event => {
+    const { target } = event;
+
+    (target as HTMLElement)!.matches(selector) && listener.call(target, event);
+  };
+
+  const handler = isDocument(selector) ? listener : delegatorFn;
+
+  document.addEventListener(events, handler, options);
+
+  return handler;
+};
+
+$.off = (events, listener, options) => {
+  document.removeEventListener(events, listener, options);
+};
+
+$.emit = (events, options) =>
+  document.dispatchEvent(new CustomEvent(events, options));
 
 export const select = (selector: string, root = document): HTMLElement | null =>
   root.querySelector(selector);

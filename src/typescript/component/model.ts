@@ -24,13 +24,13 @@ export const model = () => {
       .classList.remove("active");
   };
 
-  $(document).on("change", "#m75", ({ target }) => {
+  $.on("change", "#m75", ({ target }) => {
     m75Selected.fire({ detail: "Hello World" });
 
     updateProductContent(target as HTMLElement);
   });
 
-  $(document).on("change", "#m90", ({ target }) => {
+  $.on("change", "#m90", ({ target }) => {
     const isFirst = isFirstSectionActived(".model");
     modelSelected.fire({ detail: { isFirst } });
 

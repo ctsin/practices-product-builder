@@ -2,7 +2,7 @@ import { $, select } from "../helper";
 import { modelSelected, activeUpdated } from "../utils";
 
 export const footer = () => {
-  $(document).on("click", "#prev", () => {
+  $.on("click", "#prev", () => {
     const active = $(".active");
 
     active.removeClass("active").emit("prevClicked", { detail: { active } });

@@ -2,37 +2,29 @@ import { $ } from "../helper";
 import { toast } from "./toast";
 
 export const nav = () => {
-  const modelNavItemClicked = $(document).on("click", "#model\\@nav", event => {
+  const modelNavItemClicked = $.on("click", "#model\\@nav", event => {
     event.preventDefault();
 
     console.log("#model");
   });
 
-  const colorNavItemClicked = $(document).on("click", "#color\\@nav", event => {
+  const colorNavItemClicked = $.on("click", "#color\\@nav", event => {
     event.preventDefault();
 
     toast();
   });
 
-  const accessoryNavItemClicked = $(document).on(
-    "click",
-    "#accessory\\@nav",
-    event => {
-      event.preventDefault();
+  const accessoryNavItemClicked = $.on("click", "#accessory\\@nav", event => {
+    event.preventDefault();
 
-      console.log("#accessory");
-    }
-  );
+    console.log("#accessory");
+  });
 
-  const summaryNavItemClicked = $(document).on(
-    "click",
-    "#summary\\@nav",
-    event => {
-      event.preventDefault();
+  const summaryNavItemClicked = $.on("click", "#summary\\@nav", event => {
+    event.preventDefault();
 
-      console.log("#summary");
-    }
-  );
+    console.log("#summary");
+  });
 
   return /* html */ `
     <div class="header@nav">
