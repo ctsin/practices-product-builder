@@ -12,7 +12,7 @@ export const when = (events: CustomEvents) => {
     options?: boolean | AddEventListenerOptions
   ) => document.addEventListener(events, handdler, options);
 
-  const fire = (
+  const emit = (
     {
       cancelable = true,
       composed = true,
@@ -34,5 +34,5 @@ export const when = (events: CustomEvents) => {
       })
     );
 
-  return { on, fire };
+  return { on, emit };
 };

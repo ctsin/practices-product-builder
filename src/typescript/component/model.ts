@@ -25,14 +25,14 @@ export const model = () => {
   };
 
   $.on("change", "#m75", ({ target }) => {
-    m75Selected.fire({ detail: "Hello World" });
+    m75Selected.emit({ detail: "Hello World" });
 
     updateProductContent(target as HTMLElement);
   });
 
   $.on("change", "#m90", ({ target }) => {
     const isFirst = isFirstSectionActived(".model");
-    modelSelected.fire({ detail: { isFirst } });
+    modelSelected.emit({ detail: { isFirst } });
 
     updateProductContent(target as HTMLElement);
   });
@@ -45,7 +45,7 @@ export const model = () => {
     prev && prev.classList.add("active");
 
     const isFirst = isFirstSectionActived(".model");
-    activeUpdated.fire({ detail: { isFirst } });
+    activeUpdated.emit({ detail: { isFirst } });
   });
 
   return /* html */ `
