@@ -118,7 +118,7 @@ body {
       display: flex;
       justify-content: center;
 
-      &#{\:item} {
+      &\:item {
         padding: $spacing;
         text-decoration: none;
         color: inherit;
