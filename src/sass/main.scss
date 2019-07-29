@@ -106,7 +106,7 @@ body {
     display: none;
   }
 
-  @media (min-width: $break-mobile) {
+  @media (min-width: $break-md) {
     justify-content: center;
 
     &\@title,
@@ -248,7 +248,7 @@ body {
     }
   }
 
-  @media (min-width: $break-mobile) {
+  @media (min-width: $break-md) {
     flex-direction: row;
 
     &\@set {
@@ -377,7 +377,7 @@ body {
     }
   }
 
-  @media (min-width: $break-mobile) {
+  @media (min-width: $break-md) {
     padding: $spacing-xs $spacing;
 
     &\@total {
